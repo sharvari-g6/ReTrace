@@ -1,0 +1,83 @@
+{
+  "seed": 42,
+  "ratios": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "policy": "Global grouping by normalized-problem hash (NFKC, lowercase, whitespace collapsed, sha1[:16]) across processbench, prm800k and halueval. A problem present in several sources is one group assigned to exactly one split. Split by group, stratified by source composition, before any subsampling. ProcessBench is part of the grouped data and is NOT an untouched benchmark. Normalization statistics, RFS weights and thresholds must be fitted without using test data.",
+  "group_counts_by_source_composition": {
+    "processbench": 1992,
+    "prm800k+processbench": 850,
+    "prm800k": 10419,
+    "halueval": 20000
+  },
+  "counts": {
+    "train": {
+      "processbench": {
+        "problems": 1989,
+        "trajectories": 2384,
+        "positive": 1541
+      },
+      "prm800k": {
+        "problems": 7888,
+        "trajectories": 69007,
+        "positive": 60271
+      },
+      "halueval": {
+        "problems": 14000,
+        "trajectories": 28000,
+        "positive": 14000
+      },
+      "TOTAL": {
+        "unique_problem_groups": 23282,
+        "trajectories": 99391
+      }
+    },
+    "val": {
+      "processbench": {
+        "problems": 426,
+        "trajectories": 516,
+        "positive": 341
+      },
+      "prm800k": {
+        "problems": 1690,
+        "trajectories": 14409,
+        "positive": 12575
+      },
+      "halueval": {
+        "problems": 3000,
+        "trajectories": 6000,
+        "positive": 3000
+      },
+      "TOTAL": {
+        "unique_problem_groups": 4989,
+        "trajectories": 20925
+      }
+    },
+    "test": {
+      "processbench": {
+        "problems": 427,
+        "trajectories": 500,
+        "positive": 339
+      },
+      "prm800k": {
+        "problems": 1691,
+        "trajectories": 12866,
+        "positive": 11234
+      },
+      "halueval": {
+        "problems": 3000,
+        "trajectories": 6000,
+        "positive": 3000
+      },
+      "TOTAL": {
+        "unique_problem_groups": 4990,
+        "trajectories": 19366
+      }
+    }
+  },
+  "samples_fingerprint_sha1": "b7c4c450ffe69b2bc14c5db61caeaa5ca30b4154",
+  "n_samples": 139682,
+  "n_problem_groups": 33261
+}
