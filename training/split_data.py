@@ -1,30 +1,30 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
+MATRIX_PATH = "training/example_matrix.csv"
+SPLITS_PATH = "data/processed/sample_splits.csv"   # produced by: python -m data.make_splits
 
-df = pd.read_csv("training/example_matrix.csv")
+df = pd.read_csv(MATRIX_PATH)
+splits = pd.read_csv(SPLITS_PATH)  # sample_id, source, problem_id, split
 
-# Get unique reasoning trajectories
-sample_ids = df["sample_id"].unique()
-
-# 70% train, 30% temporary
-train_ids, temp_ids = train_test_split(
-    sample_ids,
-    test_size=0.30,
-    random_state=42
+# Splits are defined at PROBLEM-GROUP level (see data/splits/split_manifest.json),
+# not by sample_id. Every sample inherits the split of its problem.
+df = df.merge(
+    splits[["sample_id", "problem_id", "split"]],
+    on="sample_id",
+    how="left",
+    validate="many_to_one",
 )
 
-# 15% validation, 15% test
-val_ids, test_ids = train_test_split(
-    temp_ids,
-    test_size=0.50,
-    random_state=42
-)
+missing = df.loc[df["split"].isna(), "sample_id"].unique()
+assert len(missing) == 0, f"sample_ids missing from split manifest: {list(missing[:5])}"
 
-train_df = df[df["sample_id"].isin(train_ids)]
-val_df = df[df["sample_id"].isin(val_ids)]
-test_df = df[df["sample_id"].isin(test_ids)]
+# Safety check: no problem may appear in more than one split
+assert (df.groupby("problem_id")["split"].nunique() == 1).all(), "problem leaked across splits"
 
-print("Train samples:", len(train_ids))
-print("Validation samples:", len(val_ids))
-print("Test samples:", len(test_ids))
+train_df = df[df["split"] == "train"]
+val_df = df[df["split"] == "val"]
+test_df = df[df["split"] == "test"]
+
+for name, part in [("Train", train_df), ("Validation", val_df), ("Test", test_df)]:
+    print(f"{name}: {part['sample_id'].nunique()} trajectories, "
+          f"{part['problem_id'].nunique()} unique problems, {len(part)} step rows")
