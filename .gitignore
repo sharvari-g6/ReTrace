@@ -10,3 +10,13 @@ models/*.pt
 models/*.pth
 models/*.bin
 models/*.safetensors
+
+# tensors, features and trained artifacts (share via Drive / Hugging Face, not git)
+train_features_raw/
+features/*.pt
+features/extracted/
+artifacts/
+*.joblib
+*.pkl
+*.npy
+*.pt
