@@ -8,7 +8,8 @@ import pandas as pd
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score, confusion_matrix
 from calibration.normalize import TrainOnlyNormalizer
 from calibration.threshold import choose_threshold
-from training.generate_features import SIGNAL_COLUMNS, validate_features
+from features.schema import SIGNAL_COLUMNS
+from features.validate_schema import validate_matrix
 
 
 def evaluate(y, probs, threshold):
@@ -35,18 +36,18 @@ def main():
     p.add_argument("--output", default="artifacts/rfs_calibration_report.json")
     args = p.parse_args()
     df = pd.read_csv(args.input)
-    validate_features(df)
+    df = validate_matrix(df)
     bundle = joblib.load(args.model)
     cols = bundle["feature_columns"]
-    if cols != SIGNAL_COLUMNS:
-        raise ValueError(f"Expected RFS signal columns {SIGNAL_COLUMNS}, found {cols}")
+    if not set(cols) <= set(SIGNAL_COLUMNS):
+        raise ValueError(f"Unexpected signal columns {cols}")
     normalizer = TrainOnlyNormalizer.load(args.normalizer)
     if normalizer.columns != cols:
         raise ValueError("Normalizer columns do not match model feature columns.")
     scaled = normalizer.transform(df)
     model = bundle["model"]
-    val = scaled[scaled.split == "validation"]
-    test = scaled[scaled.split == "test"]
+    val = scaled[scaled["split"] == "val"]
+    test = scaled[scaled["split"] == "test"]
     val_probs = model.predict_proba(val[cols].to_numpy())[:, 1]
     chosen = choose_threshold(val.label.astype(int).to_numpy(), val_probs)
     # The threshold is now frozen. Only now are test predictions and metrics produced.
