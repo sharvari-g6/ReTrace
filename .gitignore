@@ -1,12 +1,28 @@
+# Python environment and cache
 .venv/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .env
 
+# Local datasets
 data/raw/
 data/processed/
+
+# Model weights and checkpoints
 models/*.pt
 models/*.pth
 models/*.bin
 models/*.safetensors
+
+# Hidden-state extraction artifacts
+hidden_states_full/
+features/**/*.pt
+train_features_raw/
+
+# Temporary transfer files
+retrace_colab_data.zip
+transfer/
+
+# Other large data files (uncomment if all should stay out of Git)
+# *.parquet
