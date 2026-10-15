@@ -4,11 +4,12 @@ import argparse
 import numpy as np
 import pandas as pd
 from features.schema import (KEY_COLUMNS, SIGNAL_COLUMNS, TARGET_COLUMN,
-                             GROUP_COLUMN, SPLIT_COLUMN, VALID_SPLITS)
+                             GROUP_COLUMN, SPLIT_COLUMN, VALID_SPLITS, VERIFIED_COLUMN)
 
 
 def validate_matrix(df: pd.DataFrame, *, require_signals: bool = True,
-                    require_split: bool = True, require_all_splits: bool = True) -> pd.DataFrame:
+                    require_split: bool = True, require_all_splits: bool = True,
+                    require_verified: bool = False) -> pd.DataFrame:
     """Return a cleaned copy (numeric dtypes enforced). Does not mutate the input.
 
     require_signals=False is the mode for step-probe training, which runs BEFORE
@@ -20,6 +21,8 @@ def validate_matrix(df: pd.DataFrame, *, require_signals: bool = True,
         need += [GROUP_COLUMN, SPLIT_COLUMN]
     if require_signals:
         need += SIGNAL_COLUMNS
+    if require_verified:
+        need += [VERIFIED_COLUMN]
     missing = [c for c in need if c not in df.columns]
     if missing:
         raise ValueError(f"Missing required columns: {missing}")
@@ -43,6 +46,15 @@ def validate_matrix(df: pd.DataFrame, *, require_signals: bool = True,
         raise ValueError("label must be 0 (correct) or 1 (error).")
     df[TARGET_COLUMN] = df[TARGET_COLUMN].astype(int)
 
+    if VERIFIED_COLUMN in df.columns:
+        df[VERIFIED_COLUMN] = pd.to_numeric(df[VERIFIED_COLUMN], errors="raise")
+        if not df[VERIFIED_COLUMN].isin([0, 1]).all():
+            raise ValueError("verified must be 0 or 1.")
+        df[VERIFIED_COLUMN] = df[VERIFIED_COLUMN].astype(int)
+        # verified steps must be a prefix of each trajectory; an error label there can only be the last one
+        v = df[df[VERIFIED_COLUMN] == 1]
+        if (v.groupby("sample_id")[TARGET_COLUMN].sum() > 1).any():
+            raise ValueError("A trajectory has more than one verified error step.")
     if require_signals:
         for c in SIGNAL_COLUMNS:
             df[c] = pd.to_numeric(df[c], errors="raise").astype(float)

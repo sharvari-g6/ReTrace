@@ -20,3 +20,10 @@ artifacts/
 *.pkl
 *.npy
 *.pt
+
+# generated tables (rebuild with the Day 3 commands; do not commit)
+features/*.csv
+training/labels_split.csv
+training/answer_level.csv
+training/split_matrix.csv
+train_features_pilot/

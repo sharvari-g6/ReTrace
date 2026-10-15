@@ -17,8 +17,11 @@ TARGET_COLUMN = "label"
 GROUP_COLUMN = "problem_id"
 SPLIT_COLUMN = "split"
 VALID_SPLITS = ["train", "val", "test"]
+# verified = 1 for steps up to and including the first error (annotation-backed labels).
+# Training uses all rows; headline evaluation / thresholds / calibration use verified == 1 only.
+VERIFIED_COLUMN = "verified"
 
 # Raw matrix produced by merging the signal files (no split info yet)
 FEATURE_COLUMNS = KEY_COLUMNS + SIGNAL_COLUMNS + [TARGET_COLUMN]
 # Matrix after training/split_data.py
-MATRIX_COLUMNS = KEY_COLUMNS + [GROUP_COLUMN, SPLIT_COLUMN] + SIGNAL_COLUMNS + [TARGET_COLUMN]
+MATRIX_COLUMNS = KEY_COLUMNS + [GROUP_COLUMN, SPLIT_COLUMN, VERIFIED_COLUMN] + SIGNAL_COLUMNS + [TARGET_COLUMN]

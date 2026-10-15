@@ -36,7 +36,7 @@ def main():
     p.add_argument("--output", default="artifacts/rfs_calibration_report.json")
     args = p.parse_args()
     df = pd.read_csv(args.input)
-    df = validate_matrix(df)
+    df = validate_matrix(df, require_verified=True)
     bundle = joblib.load(args.model)
     cols = bundle["feature_columns"]
     if not set(cols) <= set(SIGNAL_COLUMNS):
@@ -46,8 +46,9 @@ def main():
         raise ValueError("Normalizer columns do not match model feature columns.")
     scaled = normalizer.transform(df)
     model = bundle["model"]
-    val = scaled[scaled["split"] == "val"]
-    test = scaled[scaled["split"] == "test"]
+    # headline evaluation and threshold selection use verified steps only (team decision)
+    val = scaled[(scaled["split"] == "val") & (scaled["verified"] == 1)]
+    test = scaled[(scaled["split"] == "test") & (scaled["verified"] == 1)]
     val_probs = model.predict_proba(val[cols].to_numpy())[:, 1]
     chosen = choose_threshold(val.label.astype(int).to_numpy(), val_probs)
     # The threshold is now frozen. Only now are test predictions and metrics produced.
