@@ -27,3 +27,9 @@ training/labels_split.csv
 training/answer_level.csv
 training/split_matrix.csv
 train_features_pilot/
+
+# ARS raw outputs
+features/*.jsonl
+features/*.config.json
+features/ars_emb/
+features/*.npz
