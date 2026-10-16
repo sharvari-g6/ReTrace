@@ -33,3 +33,4 @@ features/*.jsonl
 features/*.config.json
 features/ars_emb/
 features/*.npz
+models/*.npz
