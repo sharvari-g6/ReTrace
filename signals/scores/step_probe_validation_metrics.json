@@ -1,0 +1,60 @@
+{
+  "C": 0.0005,
+  "class_weight": "balanced",
+  "layer": -1,
+  "pooling": "last_token",
+  "device": "cuda",
+  "batch_size": 512,
+  "epochs": 12,
+  "headline_val_verified_only": {
+    "n": 10968,
+    "positives": 615,
+    "auroc": 0.8792545108876183,
+    "pr_auc": 0.35945353396137947,
+    "f1_at_0.5": 0.31091084647570005,
+    "precision_at_0.5": 0.19382022471910113,
+    "recall_at_0.5": 0.7853658536585366
+  },
+  "secondary_val_all_steps": {
+    "n": 15230,
+    "positives": 4877,
+    "auroc": 0.8986622145977168,
+    "pr_auc": 0.8166588500476286,
+    "f1_at_0.5": 0.7394050343249428,
+    "precision_at_0.5": 0.6678240740740741,
+    "recall_at_0.5": 0.8281730572072996
+  },
+  "step_index_baseline_val_verified_auroc": 0.43261031914868553,
+  "n_train_steps": 74099,
+  "n_train_trajectories": 7056,
+  "headline_val_verified_per_source": {
+    "prm800k": {
+      "n": 8498,
+      "positives": 274,
+      "auroc": 0.8584572658979238,
+      "pr_auc": 0.1856217409356926,
+      "f1_at_0.5": 0.2188034188034188,
+      "precision_at_0.5": 0.12964213369345037,
+      "recall_at_0.5": 0.7007299270072993
+    },
+    "processbench": {
+      "n": 2470,
+      "positives": 341,
+      "auroc": 0.8515762635522025,
+      "pr_auc": 0.5035117806345862,
+      "f1_at_0.5": 0.43047337278106507,
+      "precision_at_0.5": 0.2878338278931751,
+      "recall_at_0.5": 0.8533724340175953
+    }
+  },
+  "source_only_baseline_val_verified_auroc": 0.6744153338374879,
+  "train_oof_verified_only": {
+    "n": 53574,
+    "positives": 2905,
+    "auroc": 0.8417519747567563,
+    "pr_auc": 0.21504210820376424,
+    "f1_at_0.5": 0.28651806968188703,
+    "precision_at_0.5": 0.1812374520897974,
+    "recall_at_0.5": 0.6836488812392427
+  }
+}

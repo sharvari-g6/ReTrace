@@ -1,0 +1,66 @@
+{
+  "config": {
+    "k": 16,
+    "alpha": 1.0,
+    "rho": 0.25,
+    "center": "global",
+    "cost": "maha",
+    "ridge": 0.01
+  },
+  "layer": -1,
+  "pooling": "mean",
+  "final_model_info": {
+    "top_eigenvalues": [
+      126.16701139946234,
+      86.85610576020282,
+      21.730771865287075,
+      20.12992579779005
+    ],
+    "n_correct_steps": 50669,
+    "n_error_steps": 23430,
+    "k": 16
+  },
+  "headline_verified_only": {
+    "train": {
+      "n": 53574,
+      "positives": 2905,
+      "auroc": 0.7144056041354288,
+      "pr_auc": 0.12309386740999496
+    },
+    "val": {
+      "n": 10968,
+      "positives": 615,
+      "auroc": 0.7130214014397461,
+      "pr_auc": 0.12930585546043957
+    }
+  },
+  "all_steps_secondary": {
+    "train": {
+      "n": 74099,
+      "positives": 23430,
+      "auroc": 0.7418001421812681,
+      "pr_auc": 0.5446530688333651
+    },
+    "val": {
+      "n": 15230,
+      "positives": 4877,
+      "auroc": 0.746060169912287,
+      "pr_auc": 0.5440479381421285
+    }
+  },
+  "per_source_verified_train_oof_plus_val": {
+    "prm800k": {
+      "n": 50386,
+      "positives": 1638,
+      "auroc": 0.7141359319910234,
+      "pr_auc": 0.08094585536798671
+    },
+    "processbench": {
+      "n": 14156,
+      "positives": 1882,
+      "auroc": 0.6374113688560372,
+      "pr_auc": 0.19729001103911273
+    }
+  },
+  "note": "test split is scored but NOT evaluated here"
+}
