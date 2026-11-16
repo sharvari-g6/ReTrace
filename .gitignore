@@ -26,3 +26,27 @@ transfer/
 
 # Other large data files (uncomment if all should stay out of Git)
 # *.parquet
+# tensors, features and trained artifacts (share via Drive / Hugging Face, not git)
+train_features_raw/
+features/*.pt
+features/extracted/
+artifacts/
+*.joblib
+*.pkl
+*.npy
+*.pt
+
+# generated tables (rebuild with the Day 3 commands; do not commit)
+features/*.csv
+training/labels_split.csv
+training/answer_level.csv
+training/split_matrix.csv
+train_features_pilot/
+
+# ARS raw outputs
+features/*.jsonl
+features/*.config.json
+features/ars_emb/
+features/*.npz
+models/*.npz
+
